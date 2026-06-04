@@ -1,0 +1,46 @@
+@model List<MecFindit.DataLayer.Models.ClaimRequest>
+
+<h2>Claim Requests</h2>
+
+@if (TempData["Message"] != null)
+{
+    var type = TempData["MessageType"]?.ToString();
+    var alertClass = type == "Approved" ? "alert-success" :
+                     type == "Rejected" ? "alert-danger" :
+                     "alert-info";
+
+    <div class="alert @alertClass">@TempData["Message"]</div>
+}
+
+<table class="table table-bordered">
+    <tr>
+        <th>Claim ID</th>
+        <th>Item ID</th>
+        <th>Claim User ID</th>
+        <th>Proof</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+
+@foreach (var claim in Model)
+{
+    <tr>
+        <td>@claim.Id</td>
+        <td>@claim.ItemReportId</td>
+        <td>@claim.CampusUserId</td>
+        <td>@claim.ProofDescription</td>
+        <td>@claim.ClaimStatus</td>
+        <td>
+            @if (claim.ClaimStatus == "Pending")
+            {
+                <a asp-action="Approve" asp-route-id="@claim.Id" class="btn btn-success btn-sm">Approve</a>
+                <a asp-action="Reject" asp-route-id="@claim.Id" class="btn btn-danger btn-sm">Reject</a>
+            }
+            else
+            {
+                <span>@claim.ClaimStatus</span>
+            }
+        </td>
+    </tr>
+}
+</table>

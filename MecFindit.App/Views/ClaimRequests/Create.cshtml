@@ -1,0 +1,16 @@
+@model MecFindit.DataLayer.Models.ClaimRequest
+
+<div class="card-box">
+    <h2>Claim Item</h2>
+
+    <form asp-action="Create" method="post">
+        <input type="hidden" asp-for="ItemReportId" />
+
+        <label>Explain why this item belongs to you</label>
+        <textarea asp-for="ProofDescription" class="form-control" required></textarea>
+
+        <br />
+
+        <button type="submit" class="btn btn-success">Submit Claim</button>
+    </form>
+</div>

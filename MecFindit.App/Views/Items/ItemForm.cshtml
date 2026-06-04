@@ -1,0 +1,61 @@
+@model MecFindit.DataLayer.Models.ItemReport
+
+<div class="card-box">
+    <h2>@(Model.ItemType == "Lost" ? "Report Lost Item" : "Post Found Item")</h2>
+
+    <form asp-action="@(Model.Id == 0 ? "Save" : "Update")" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="ItemType" />
+        <input type="hidden" asp-for="CampusUserId" />
+        <input type="hidden" asp-for="ItemStatusId" />
+        <input type="hidden" asp-for="PhotoPath" />
+        <input type="hidden" asp-for="CreatedAt" />
+
+        <label>Item Name</label>
+        <input asp-for="ItemName" class="form-control" required />
+
+        <br />
+
+        <label>Category</label>
+        <select asp-for="Category" class="form-control" required>
+            <option value="">Select Category</option>
+            <option value="ID Card">ID Card</option>
+            <option value="Wallet">Wallet</option>
+            <option value="Phone">Phone</option>
+            <option value="Keys">Keys</option>
+            <option value="Books">Books</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Documents">Documents</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <br />
+
+        <label>Description</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+
+        <br />
+
+        <label>Location</label>
+        <input asp-for="Location" class="form-control" required />
+
+        <br />
+
+        <label>Date</label>
+        <input asp-for="ItemDate" type="date" class="form-control" required />
+
+        <br />
+
+        <label>Contact Number</label>
+        <input asp-for="ContactNumber" class="form-control" />
+
+        <br />
+
+        <label>Photo</label>
+        <input name="photo" type="file" class="form-control" />
+
+        <br />
+
+        <button type="submit" class="btn btn-success">Submit</button>
+    </form>
+</div>

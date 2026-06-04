@@ -1,0 +1,133 @@
+@model List<MecFindit.DataLayer.Models.ItemReport>
+
+<h2>MEC Findit Home</h2>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+
+<h2>Lost Items</h2>
+
+<div class="row">
+@foreach(var item in Model.Where(i => i.ItemType == "Lost"))
+{
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm">
+
+            @if(!string.IsNullOrEmpty(item.PhotoPath))
+{
+    <img src="@Url.Content(item.PhotoPath)"
+         class="card-img-top"
+         style="height:220px; object-fit:cover;" />
+}
+
+            <div class="card-body">
+
+                <h5 class="card-title">@item.ItemName</h5>
+
+                <p>
+                    <strong>Category:</strong> @item.Category <br />
+                    <strong>Location:</strong> @item.Location <br />
+                    <strong>Date:</strong> @item.ItemDate.ToShortDateString() <br />
+                    <strong>Contact:</strong> @item.ContactNumber <br />
+                    <strong>Status:</strong> @StatusName(item.ItemStatusId)
+                </p>
+
+                @if (Context.Session.GetInt32("UserId") == item.CampusUserId ||
+                        Context.Session.GetString("Role") == "Admin")
+    {
+    <a asp-controller="Items"
+       asp-action="Edit"
+       asp-route-id="@item.Id"
+       class="btn btn-warning btn-sm">
+        Edit
+    </a>
+    }
+
+    @if (Context.Session.GetInt32("UserId") == item.CampusUserId ||
+     Context.Session.GetString("Role") == "Admin")
+{
+    <a asp-controller="Items"
+       asp-action="Delete"
+       asp-route-id="@item.Id"
+       class="btn btn-danger btn-sm"
+       onclick="return confirm('Are you sure you want to delete this item?')">
+        Delete
+    </a>
+}
+
+            </div>
+
+        </div>
+    </div>
+}
+</div>
+
+<h2>Found Items</h2>
+
+<div class="row">
+@foreach(var item in Model.Where(i => i.ItemType == "Found"))
+{
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm">
+
+            @if(!string.IsNullOrEmpty(item.PhotoPath))
+            {
+                <img src="@item.PhotoPath"
+                     class="card-img-top"
+                     style="height:220px; object-fit:cover;" />
+            }
+
+            <div class="card-body">
+
+                <h5 class="card-title">@item.ItemName</h5>
+
+                <p>
+                    <strong>Category:</strong> @item.Category <br />
+                    <strong>Location:</strong> @item.Location <br />
+                    <strong>Date:</strong> @item.ItemDate.ToShortDateString() <br />
+                    <strong>Contact:</strong> @item.ContactNumber <br />
+                    <strong>Status:</strong> @StatusName(item.ItemStatusId)
+                </p>
+
+               @if (Context.Session.GetInt32("UserId") != null && item.ItemStatusId != 4)
+                {
+                    <a asp-controller="ClaimRequests"
+                       asp-action="CreateForItem"
+                       asp-route-itemReportId="@item.Id"
+                       class="btn btn-info">
+                       Claim Item
+                    </a>
+                }
+                @if (Context.Session.GetInt32("UserId") == item.CampusUserId ||
+     Context.Session.GetString("Role") == "Admin")
+{
+    <a asp-controller="Items"
+       asp-action="Delete"
+       asp-route-id="@item.Id"
+       class="btn btn-danger btn-sm"
+       onclick="return confirm('Are you sure you want to delete this item?')">
+        Delete
+    </a>
+}
+
+            </div>
+
+        </div>
+    </div>
+}
+</div>
+
+@functions {
+    string StatusName(int id)
+    {
+        if (id == 1) return "Pending";
+        if (id == 2) return "Approved";
+        if (id == 3) return "Rejected";
+        if (id == 4) return "Claimed";
+        if (id == 5) return "Returned";
+        if (id == 6) return "Closed";
+        return "Unknown";
+    }
+}

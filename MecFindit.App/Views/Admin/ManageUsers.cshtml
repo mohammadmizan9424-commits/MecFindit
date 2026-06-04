@@ -1,0 +1,52 @@
+@model List<MecFindit.DataLayer.Models.CampusUser>
+
+<h2>Manage Users</h2>
+
+@if (TempData["Message"] != null)
+{
+    var type = TempData["MessageType"]?.ToString();
+    var alertClass = type == "Approved" ? "alert-success" : "alert-danger";
+
+    <div class="alert @alertClass">@TempData["Message"]</div>
+}
+
+<table class="table table-bordered">
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Role</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+
+@foreach (var user in Model)
+{
+    <tr>
+        <td>@user.FullName</td>
+        <td>@user.Email</td>
+        <td>@user.PhoneNumber</td>
+        <td>@user.Role</td>
+        <td>
+            @if (user.IsBanned)
+            {
+                <span class="badge bg-danger">Banned</span>
+            }
+            else
+            {
+                <span class="badge bg-success">Active</span>
+            }
+        </td>
+        <td>
+            @if (user.Role != "Admin")
+            {
+                <a class="btn btn-sm @(user.IsBanned ? "btn-success" : "btn-danger")"
+                   asp-action="ToggleBanUser"
+                   asp-route-id="@user.Id">
+                    @(user.IsBanned ? "Unban" : "Ban")
+                </a>
+            }
+        </td>
+    </tr>
+}
+</table>

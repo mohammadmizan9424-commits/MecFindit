@@ -1,0 +1,51 @@
+@model List<MecFindit.DataLayer.Models.ItemReport>
+
+<h2>All Item Reports</h2>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+
+<table class="table table-bordered">
+    <tr>
+        <th>Type</th>
+        <th>Item</th>
+        <th>Category</th>
+        <th>Location</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>@item.ItemType</td>
+        <td>@item.ItemName</td>
+        <td>@item.Category</td>
+        <td>@item.Location</td>
+        <td>@item.ItemDate.ToShortDateString()</td>
+        <td>@StatusName(item.ItemStatusId)</td>
+        <td>
+            @if (item.ItemType == "Found" && Context.Session.GetInt32("UserId") != null && item.ItemStatusId != 4)
+            {
+                <a asp-controller="ClaimRequests" asp-action="CreateForItem" asp-route-itemReportId="@item.Id" class="btn btn-info btn-sm">Claim</a>
+            }
+        </td>
+    </tr>
+}
+</table>
+
+@functions {
+    string StatusName(int id)
+    {
+        if (id == 1) return "Pending";
+        if (id == 2) return "Approved";
+        if (id == 3) return "Rejected";
+        if (id == 4) return "Claimed";
+        if (id == 5) return "Returned";
+        if (id == 6) return "Closed";
+        return "Unknown";
+    }
+}

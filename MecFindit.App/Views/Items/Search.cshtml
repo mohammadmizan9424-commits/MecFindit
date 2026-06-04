@@ -1,0 +1,65 @@
+@model List<MecFindit.DataLayer.Models.ItemReport>
+
+<h2>Search Items</h2>
+
+<form method="get">
+    <input name="keyword" value="@ViewBag.Keyword" class="form-control" placeholder="Search by item, category, or location" />
+    <br />
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+<br />
+
+<div class="row">
+@foreach (var item in Model)
+{
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm">
+
+                       @if (!string.IsNullOrEmpty(item.PhotoPath))
+            {
+                <img src="@Url.Content(item.PhotoPath)"
+                     class="card-img-top"
+                     style="height:220px; object-fit:cover;" />
+            }
+
+            <div class="card-body">
+                <h5>@item.ItemName</h5>
+
+                <p>
+                    <strong>Type:</strong> @item.ItemType <br />
+                    <strong>Category:</strong> @item.Category <br />
+                    <strong>Location:</strong> @item.Location <br />
+                    <strong>Contact:</strong> @item.ContactNumber <br />
+                    <strong>Status:</strong> @StatusName(item.ItemStatusId)
+                </p>
+
+               @if (Context.Session.GetInt32("UserId") != null &&
+     item.ItemType == "Found" &&
+     item.ItemStatusId != 4)
+                {
+                    <a asp-controller="ClaimRequests"
+                       asp-action="CreateForItem"
+                       asp-route-itemReportId="@item.Id"
+                       class="btn btn-info">
+                        Claim Item
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+}
+</div>
+
+@functions {
+    string StatusName(int id)
+    {
+        if (id == 1) return "Pending";
+        if (id == 2) return "Approved";
+        if (id == 3) return "Rejected";
+        if (id == 4) return "Claimed";
+        if (id == 5) return "Returned";
+        if (id == 6) return "Closed";
+        return "Unknown";
+    }
+}

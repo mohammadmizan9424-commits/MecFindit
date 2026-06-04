@@ -1,0 +1,71 @@
+@model List<MecFindit.DataLayer.Models.ItemReport>
+
+<h2>Admin Dashboard</h2>
+
+<a class="btn btn-primary" asp-action="ManageUsers">Manage Users</a>
+<a class="btn btn-info" asp-controller="ClaimRequests" asp-action="AdminClaims">View Claim Requests</a>
+
+<br />
+<br />
+
+@if (TempData["Message"] != null)
+{
+    var type = TempData["MessageType"]?.ToString();
+
+    var alertClass = type == "Approved" ? "alert-success" :
+                     type == "Rejected" ? "alert-danger" :
+                     type == "Claimed" ? "alert-info" :
+                     "alert-warning";
+
+    <div class="alert @alertClass">@TempData["Message"]</div>
+}
+
+<table class="table table-bordered">
+    <tr>
+        <th>Photo</th>
+        <th>Type</th>
+        <th>Item</th>
+        <th>Category</th>
+        <th>Location</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @if (!string.IsNullOrEmpty(item.PhotoPath))
+            {
+                <img src="@item.PhotoPath"
+                     width="80"
+                     height="80"
+                     style="object-fit:cover;border-radius:5px;" />
+            }
+        </td>
+        <td>@item.ItemType</td>
+        <td>@item.ItemName</td>
+        <td>@item.Category</td>
+        <td>@item.Location</td>
+        <td>@StatusName(item.ItemStatusId)</td>
+        <td>
+            <a asp-action="UpdateStatus" asp-route-id="@item.Id" asp-route-statusId="2" class="btn btn-success btn-sm">Approve</a>
+            <a asp-action="UpdateStatus" asp-route-id="@item.Id" asp-route-statusId="3" class="btn btn-danger btn-sm">Reject</a>
+            <a asp-action="UpdateStatus" asp-route-id="@item.Id" asp-route-statusId="5" class="btn btn-info btn-sm">Returned</a>
+        </td>
+    </tr>
+}
+</table>
+
+@functions {
+    string StatusName(int id)
+    {
+        if (id == 1) return "Pending";
+        if (id == 2) return "Approved";
+        if (id == 3) return "Rejected";
+        if (id == 4) return "Claimed";
+        if (id == 5) return "Returned";
+        if (id == 6) return "Closed";
+        return "Unknown";
+    }
+}

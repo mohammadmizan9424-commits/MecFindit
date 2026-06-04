@@ -1,0 +1,36 @@
+@model List<MecFindit.DataLayer.Models.Notification>
+
+<h2>Notifications</h2>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Message</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+
+@foreach (var notification in Model)
+{
+    <tr>
+        <td>@notification.Message</td>
+        <td>@notification.CreatedAt.ToString("dd-MMM-yyyy HH:mm")</td>
+        <td>
+            @if (notification.IsRead)
+            {
+                <span class="badge bg-secondary">Read</span>
+            }
+            else
+            {
+                <span class="badge bg-warning">Unread</span>
+            }
+        </td>
+        <td>
+            @if (!notification.IsRead)
+            {
+                <a asp-action="MarkAsRead" asp-route-id="@notification.Id" class="btn btn-primary btn-sm">Mark as Read</a>
+            }
+        </td>
+    </tr>
+}
+</table>

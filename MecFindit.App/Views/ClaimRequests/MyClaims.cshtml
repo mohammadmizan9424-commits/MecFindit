@@ -1,0 +1,24 @@
+@model List<MecFindit.DataLayer.Models.ClaimRequest>
+
+<h2>My Claim Requests</h2>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Claim ID</th>
+        <th>Item ID</th>
+        <th>Proof</th>
+        <th>Status</th>
+        <th>Admin Message</th>
+    </tr>
+
+@foreach (var claim in Model)
+{
+    <tr>
+        <td>@claim.Id</td>
+        <td>@claim.ItemReportId</td>
+        <td>@claim.ProofDescription</td>
+        <td>@claim.ClaimStatus</td>
+        <td>@claim.AdminMessage</td>
+    </tr>
+}
+</table>
