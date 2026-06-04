@@ -17,26 +17,32 @@
     </div>
 
     <nav>
-        @if (Context.Session.GetInt32("UserId") != null)
-        {
-            <a asp-controller="Home" asp-action="Index">Home</a>
-            <a asp-controller="Items" asp-action="Index">All Items</a>
-            <a asp-controller="Items" asp-action="Search">Search</a>
-            <a asp-controller="Items" asp-action="ReportLost">Report Lost</a>
-            <a asp-controller="Items" asp-action="ReportFound">Post Found</a>
-            <a asp-controller="ClaimRequests" asp-action="MyClaims">My Claims</a>
-            <a asp-controller="Notifications" asp-action="Index">Notifications</a>
+       @if (Context.Session.GetInt32("UserId") != null)
+{
+    <a asp-controller="Home" asp-action="Index">Home</a>
+    <a asp-controller="Items" asp-action="Search">Search</a>
+    <a asp-controller="Items" asp-action="ReportLost">Report Lost</a>
+    <a asp-controller="Items" asp-action="ReportFound">Post Found</a>
 
-            @if (Context.Session.GetString("Role") == "Admin")
-            {
-                <a asp-controller="Admin" asp-action="Dashboard">Admin</a>
-                <a asp-controller="Admin" asp-action="ManageUsers">Users</a>
-                <a asp-controller="ClaimRequests" asp-action="AdminClaims">Claim Requests</a>
-            }
+    @if (Context.Session.GetString("Role") != "Admin")
+    {
+        <a asp-controller="ClaimRequests" asp-action="MyClaims">My Claims</a>
+        <a asp-controller="Notifications" asp-action="Index">Notifications</a>
+    }
 
-            <span class="welcome-text">Welcome, @Context.Session.GetString("FullName")</span>
-            <a asp-controller="Account" asp-action="Logout">Logout</a>
-        }
+    @if (Context.Session.GetString("Role") == "Admin")
+    {
+        <a asp-controller="Admin" asp-action="Dashboard">Admin</a>
+        <a asp-controller="Admin" asp-action="ManageUsers">Users</a>
+        <a asp-controller="ClaimRequests" asp-action="AdminClaims">Claim Requests</a>
+    }
+
+    <span class="welcome-text">
+        Welcome, @Context.Session.GetString("FullName")
+    </span>
+
+    <a asp-controller="Account" asp-action="Logout">Logout</a>
+}
         else
         {
             <a asp-controller="Account" asp-action="Login">Login</a>

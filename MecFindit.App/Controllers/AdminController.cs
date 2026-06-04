@@ -43,13 +43,26 @@ public class AdminController : Controller
             return NotFound();
         }
 
-        item.ItemStatusId = statusId;
-        _unitOfWork.ItemReports.Update(item);
-
         string statusName = GetStatusName(statusId);
+
         if (item.ItemType == "Found" && statusId == 5)
         {
+            var claims = await _unitOfWork.ClaimRequests.FindAsync(c => c.ItemReportId == item.Id);
+
+            foreach (var claim in claims)
+            {
+                _unitOfWork.ClaimRequests.Delete(claim);
+            }
+
+            var notifications = await _unitOfWork.Notifications.FindAsync(n => n.ItemReportId == item.Id);
+
+            foreach (var notification in notifications)
+            {
+                _unitOfWork.Notifications.Delete(notification);
+            }
+
             _unitOfWork.ItemReports.Delete(item);
+
             await _unitOfWork.SaveAsync();
 
             TempData["Message"] = "Found item has been marked as returned and deleted.";
@@ -57,6 +70,10 @@ public class AdminController : Controller
 
             return RedirectToAction("Dashboard");
         }
+
+        item.ItemStatusId = statusId;
+
+        _unitOfWork.ItemReports.Update(item);
 
         await _unitOfWork.Notifications.AddAsync(new Notification
         {
