@@ -45,7 +45,7 @@ public class AdminController : Controller
 
         string statusName = GetStatusName(statusId);
 
-        if (item.ItemType == "Found" && statusId == 5)
+        if (statusId == 5)
         {
             var claims = await _unitOfWork.ClaimRequests.FindAsync(c => c.ItemReportId == item.Id);
 
@@ -65,7 +65,7 @@ public class AdminController : Controller
 
             await _unitOfWork.SaveAsync();
 
-            TempData["Message"] = "Found item has been marked as returned and deleted.";
+            TempData["Message"] = "Item has been marked as returned and deleted.";
             TempData["MessageType"] = "Returned";
 
             return RedirectToAction("Dashboard");
