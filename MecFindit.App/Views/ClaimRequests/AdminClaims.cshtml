@@ -15,8 +15,8 @@
 <table class="table table-bordered">
     <tr>
         <th>Claim ID</th>
-        <th>Item ID</th>
         <th>Claim User ID</th>
+        <th>Item ID</th>
         <th>Proof</th>
         <th>Status</th>
         <th>Action</th>
@@ -25,11 +25,11 @@
 @foreach (var claim in Model)
 {
     <tr>
-        <td>@claim.Id</td>
-        <td>@claim.ItemReportId</td>
-        <td>@claim.CampusUserId</td>
-        <td>@claim.ProofDescription</td>
-        <td>@claim.ClaimStatus</td>
+                <td>@claim.Id</td>
+                <td>@claim.CampusUserId</td>
+                <td>@claim.ItemReportId</td>
+                <td>@claim.ProofDescription</td>
+                <td>@claim.ClaimStatus</td>
         <td>
             @if (claim.ClaimStatus == "Pending")
             {

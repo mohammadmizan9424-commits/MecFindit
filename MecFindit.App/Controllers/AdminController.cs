@@ -45,6 +45,31 @@ public class AdminController : Controller
 
         string statusName = GetStatusName(statusId);
 
+        if (statusId == 3)
+        {
+            var claims = await _unitOfWork.ClaimRequests.FindAsync(c => c.ItemReportId == item.Id);
+
+            foreach (var claim in claims)
+            {
+                _unitOfWork.ClaimRequests.Delete(claim);
+            }
+
+            var notifications = await _unitOfWork.Notifications.FindAsync(n => n.ItemReportId == item.Id);
+
+            foreach (var notification in notifications)
+            {
+                _unitOfWork.Notifications.Delete(notification);
+            }
+
+            _unitOfWork.ItemReports.Delete(item);
+
+            await _unitOfWork.SaveAsync();
+
+            TempData["Message"] = "Item report has been rejected and deleted.";
+            TempData["MessageType"] = "Rejected";
+
+            return RedirectToAction("Dashboard");
+        }
         if (statusId == 5)
         {
             var claims = await _unitOfWork.ClaimRequests.FindAsync(c => c.ItemReportId == item.Id);

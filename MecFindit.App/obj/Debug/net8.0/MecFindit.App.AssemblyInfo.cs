@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MecFindit.App")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+82cabd78d3f9b8cdac01399a6e1d8969c2b4ae85")]
 [assembly: System.Reflection.AssemblyProductAttribute("MecFindit.App")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MecFindit.App")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

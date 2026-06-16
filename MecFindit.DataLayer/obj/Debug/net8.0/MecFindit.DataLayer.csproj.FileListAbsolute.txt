@@ -10,3 +10,4 @@ C:\pr\My project\MecFindit\MecFindit.DataLayer\obj\Debug\net8.0\MecFindit.DataLa
 C:\pr\My project\MecFindit\MecFindit.DataLayer\obj\Debug\net8.0\refint\MecFindit.DataLayer.dll
 C:\pr\My project\MecFindit\MecFindit.DataLayer\obj\Debug\net8.0\MecFindit.DataLayer.pdb
 C:\pr\My project\MecFindit\MecFindit.DataLayer\obj\Debug\net8.0\ref\MecFindit.DataLayer.dll
+C:\pr\My project\MecFindit\MecFindit.DataLayer\obj\Debug\net8.0\MecFindit.DataLayer.sourcelink.json
